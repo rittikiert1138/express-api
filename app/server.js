@@ -3,9 +3,12 @@ const routes = require("./routes");
 const config = require("./config/constants");
 const db = require("./db/index.js");
 const express = require("express");
+const cors = require("cors");
 
 // สร้าง instance express ไว้ในตัวแปร app
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
