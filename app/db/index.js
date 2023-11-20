@@ -20,17 +20,27 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-//ส่วนนี้เป็นการ import model ของ table ใน database เข้ามาเพื่อตั้งต่า relation นะครับ
-// db.player = require("./models/player")(sequelize, Sequelize);
-// db.team = require("./models/team")(sequelize, Sequelize);
-// //ส่วนนี้เป็นการตั้งต่า relation นะครับ โดยเป็นการบอกว่าใน 1 team มีได้หลาย player ง่ายๆ ก็คือ relation แบบ 1:M
-// db.team.hasMany(db.player, {
-//   foreignKey: { name: "tid", field: "tid" }, //name ตรงสำคัญพยายามตั่งให้เป็นชื่อเดียวกับ FK ใน table ที่นำไปใช้นะครับ
-// });
-// //ส่วนนี้เป็นการตั้ง relation แบบกลับกันกับด้านบน จริงแล้วเราไม่ตั้งก็ได้นะครับแต่ผมแนะนำให้ตั้งเอาไว้ เพราะเวลาที่เราไม่ได้ใส่
-// //line นี้จะทำให้เราสามารถใช้  team ในการหา player ได้อย่างเดียวและไม่สามารถใช้ player หา team ได้
-// db.player.belongsTo(db.team, { foreignKey: "tid" });
-
+// ส่วนนี้เป็นการ import model ของ table ใน database เข้ามาเพื่อตั้งต่า relation นะครับ
+db.product = require("./models/product")(sequelize, Sequelize);
+db.product_type = require("./models/product_type")(sequelize, Sequelize);
+// db.product_gallery = require("./models/product_gallery")(sequelize, Sequelize);
 db.user = require("./models/user")(sequelize, Sequelize);
+
+db.product_type.hasMany(db.product, {
+  foreignKey: { name: "typeId", field: "typeId" },
+});
+
+db.product.belongsTo(db.product_type, { foreignKey: "typeId" });
+
+// db.product_gallery.hasMany(db.product, {
+//   foreignKey: { name: "galleryId", field: "galleryId" },
+// });
+
+// db.product.belongsTo(db.product_gallery, { foreignKey: "galleryId" });
+
+// db.team.hasMany(db.player, {
+//   foreignKey: { name: "tid", field: "tid" },
+// });
+// db.player.belongsTo(db.team, { foreignKey: "tid" });
 
 module.exports = db;
