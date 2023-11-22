@@ -19,7 +19,7 @@ export const getUsers = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     let userId = req.params.user_id;
-    let _user = await user.findOne({ where: { user_id: userId } });
+    let _user = await user.findOne({ where: { userId: userId } });
 
     res.json({
       user: _user,
@@ -36,8 +36,7 @@ export const createUser = async (req, res) => {
     });
 
     if (checkDuplicate == null) {
-      // const salt = bcrypt.genSaltSync(10);
-      let genPassword = bcrypt.hashSync(req.body.password, 5);
+      let genPassword = await bcrypt.hash(req.body.password, 10);
       await user.create({
         ...req.body,
         password: genPassword,
@@ -84,7 +83,7 @@ export const deleteUser = async (req, res) => {
   try {
     await user.destroy({
       where: {
-        user_id: req.params.user_id,
+        userId: req.params.user_id,
       },
     });
 
@@ -96,42 +95,36 @@ export const deleteUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    // await user.destroy({
-    //   where: {
-    //     user_id: req.params.user_id,
-    //   },
-    // });
+    let { password, email } = req.body;
+    let _user = await user.findOne({ where: { email: email } });
+    if (_user) {
+      let checkPassword = await bcrypt.compare(password, _user.password);
 
-    console.log("req.body", req.body);
+      if (checkPassword) {
+        let token = jwt.sign(
+          {
+            userId: _user.lastName,
+            firstName: _user.firstName,
+            email: _user.email,
+            phone: _user.phone,
+          },
+          "auth login",
+          { expiresIn: "2h" }
+        );
 
-    let _user = await user.findOne({ where: { email: req.body.email } });
-
-    // res.json(_user);
-
-    console.log("_user", _user);
-
-    if (_user != null) {
-      let checkPassword = bcrypt.compareSync(req.body.password, _user.password);
-      res.json({
-        check: checkPassword,
-      });
-      // const match = await bcrypt.compare(req.body.password, _user.password);
-
-      // res.json(match);
-      // bcrypt.compare(req.body.password, _user.password).then(function (result) {
-      //   console.log("check", result);
-      //   // result == false
-      // });
+        res.json({
+          token: token,
+        });
+      } else {
+        res.json({
+          msg: "รหัสผ่านไม่ถูกต้อง",
+        });
+      }
     } else {
-      res.json({ msg: "This email does not exist" });
+      res.json({
+        msg: "ไม่มีผู้ใช้งานนี้อยู่ในระบบ",
+      });
     }
-
-    // let _user = await user.findOne({
-    //   where: { email: req.body.email },
-    // });
-    // let checkPassword = bcrypt.compareSync(myPlaintextPassword, hash);
-
-    res.json(_user);
   } catch (error) {
     console.log(error);
   }

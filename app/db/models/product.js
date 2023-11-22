@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
         field: "productPrice",
       },
       productThumbnail: {
-        type: Sequelize.INTEGER(3),
+        type: Sequelize.STRING(255),
         allowNull: true,
         field: "productThumbnail",
       },
