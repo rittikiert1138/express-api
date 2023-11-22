@@ -23,15 +23,13 @@ routes.get("/product-type/:type_id", productTypeController.getType);
 routes.post("/product-type", productTypeController.createType);
 routes.put("/product-type/:type_id", productTypeController.updateType);
 routes.delete("/product-type/:type_id", productTypeController.deleteType);
-// routes.get("/product/:product_id", productController.getProduct);
-// routes.post("/product", productController.createProduct);
-// routes.put("/product/:product_id", productController.updateProduct);
-// routes.delete("/product/:product_id", productController.deleteProduct);
 
 routes.get("/product", productController.getProducts);
 routes.get("/product/:product_id", productController.getProduct);
 routes.post("/product", productController.createProduct);
 routes.put("/product/:product_id", productController.updateProduct);
 routes.delete("/product/:product_id", productController.deleteProduct);
+
+routes.delete("/product/upload", productController.upload);
 
 export default routes;

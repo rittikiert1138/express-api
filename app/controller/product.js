@@ -156,3 +156,15 @@ export const deleteProduct = async (req, res) => {
     res.status(400).json({ msg: error.message });
   }
 };
+
+export const upload = async (req, res) => {
+  try {
+    console.log("body", req.body);
+
+    res.json({
+      msg: "Delete product successfully",
+    });
+  } catch (error) {
+    res.status(400).json({ msg: error.message });
+  }
+};
