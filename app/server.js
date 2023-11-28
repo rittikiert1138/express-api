@@ -15,7 +15,7 @@ db.sequelize.sync();
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, "../uploads")));
+app.use("/public", express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(

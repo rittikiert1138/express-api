@@ -51,7 +51,7 @@ export const createProduct = async (req, res) => {
 
         body.productThumbnail = media1;
 
-        file1.mv(`${__dirname}/../../uploads/thumbnail/${media1}`);
+        file1.mv(`${__dirname}/../public/${media1}`);
       }
 
       await product.create(body);
@@ -93,11 +93,11 @@ export const updateProduct = async (req, res) => {
           let file1 = req.files.productThumbnail;
           if (
             fs.existsSync(
-              `${__dirname}/../../uploads/thumbnail/${getProduct.productThumbnail}`
+              `${__dirname}/../../public/thumbnail/${getProduct.productThumbnail}`
             )
           ) {
             fs.unlinkSync(
-              `${__dirname}/../../uploads/thumbnail/${getProduct.productThumbnail}`
+              `${__dirname}/../../public/thumbnail/${getProduct.productThumbnail}`
             );
           }
 
@@ -106,7 +106,7 @@ export const updateProduct = async (req, res) => {
 
           body.productThumbnail = media1;
 
-          file1.mv(`${__dirname}/../../uploads/thumbnail/${media1}`);
+          file1.mv(`${__dirname}/../../public/thumbnail/${media1}`);
         }
       } else {
         body.productThumbnail = getProduct.productThumbnail;
@@ -136,11 +136,11 @@ export const deleteProduct = async (req, res) => {
 
     if (
       fs.existsSync(
-        `${__dirname}/../../uploads/thumbnail/${getProduct.productThumbnail}`
+        `${__dirname}/../../public/thumbnail/${getProduct.productThumbnail}`
       )
     ) {
       fs.unlinkSync(
-        `${__dirname}/../../uploads/thumbnail/${getProduct.productThumbnail}`
+        `${__dirname}/../../public/thumbnail/${getProduct.productThumbnail}`
       );
     }
     await product.destroy({
